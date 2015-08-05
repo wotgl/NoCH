@@ -42,10 +42,66 @@ var webSocketServer = new WebSocketServer.Server({
     port: 8085
 });
 
-console.log('The server is running');
+// console.log('The server is running');
+
+
+
+
+
+// var scribe = require('scribe-js')(); //loads Scribe
+// var express = require('express')
+// var app = express()
+
+// app.use('\logs', scribe.webPanel());
+
+// app.listen(5555);
+// var console = process.console;
+// // With log(...)
+// console.log("Hello World!");
+// console.tag("Demo").time().file().log("Hello world");
+
+
+
+var scribe = require('scribe-js')(),
+        console = process.console,
+        express = require('express'),
+        app = express();
+
+
+    app.set('port', (process.env.PORT || 5000));
+
+    app.get('/', function(req, res) {
+        res.send('Hello world, see you at /logs');
+    });
+
+    app.use('/logs', scribe.webPanel());
+
+
+    //Make some logs
+    console.addLogger('debug', 'green');
+    // console.addLogger('fun', 'red');
+
+    // console.time().fun('hello world');
+    // console.tag('connection').time().debug('A test');
+    // console.tag('An object').log({
+    //     a: 'b',
+    //     c: [1, 2, 3]
+    // });
+
+    var port = app.get("port");
+
+    app.listen(port, function() {
+        console.time().log('Server listening at port ' + port);
+    });
+
+
+
+
+
+
+
 
 webSocketServer.on('connection', function(ws) {
-
     var mapRadius = params.getParameter("gameDiameter") / 2;
 
     var minAreaRadius = 0;
@@ -62,8 +118,17 @@ webSocketServer.on('connection', function(ws) {
 
     player.body.number = player.body.playerNumber = id;
 
-    console.log('new player ' + id +
-     ', players total ' + players.length);
+    // console.log('new player ' + id +
+    //  ', players total ' + players.length);
+
+    var address = ws.upgradeReq.connection.remoteAddress;   // IP-address
+
+    console.tag('connection', 'id=' + id, 'ip=' + address).time().log({
+        'type' : 'connection',
+        'ip': address,
+        'player id': id,
+        'total players': players.length
+    });
 
     ws.on('message', function(message) {
         //console.log('player ' + id + " says " + message);
@@ -94,12 +159,26 @@ webSocketServer.on('connection', function(ws) {
     });
 
     ws.on('close', function () {
-        console.log('player exited ' + id);
+        // console.log('player exited ' + id);
+        console.tag('connection', 'id=' + id, 'ip=' + address).time().log({
+            'type' : 'disconnecting',
+            'ip': address,
+            'player id': id,
+            'total players': players.length
+        });
+
+        player.getFormula();
         deletePlayer();
     });
 
     ws.on('error', function () {
-        console.log('player disconnected ' + id);
+        // console.log('player disconnected ' + id);
+        console.tag('error', 'id=' + id, 'ip=' + address).time().log({
+            'player id': id,
+            'ip': address,
+            'total players': players.length
+        });
+
         deletePlayer();
     });
 
@@ -322,6 +401,7 @@ function createBond(playerBody, garbageBody) {
         ++playerBody.chemicalBonds;
         ++garbageBody.chemicalBonds;
 
+        console.log('playerBody.angle = ' +(playerBody.angle* 57.3) % 360);
         if (playerBody.previousAngle !== undefined) {
 
             /*var pos1 = playerBody.position;
@@ -336,6 +416,8 @@ function createBond(playerBody, garbageBody) {
             var N = 15;     // Number of iterations
             garbageBody.collisionFilter.mask = 0x0008;      // turn off collisions
             var angle = playerBody.previousAngle + 2 * Math.PI / playerBody.totalBonds;
+            console.log('playerBody.previousAngle = ' + (playerBody.previousAngle * 57.3) % 360);
+            console.log('angle = ' + (angle * 57.3) % 360);
             /*var destination = findAngle(playerBody.position, prev.position,
                 playerBody.totalBonds, garbageBody.circleRadius,
                 playerBody.circleRadius, playerBody.angle);*/

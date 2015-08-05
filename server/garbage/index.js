@@ -26,6 +26,7 @@ var Garbage = function(position, engine, elem) {
     World.addBody(engine.world, this.body);
 
     var self = this;
+    this.element = element;
     this.body.inGameType = "garbage";
     this.body.prevId = -1;
     this.body.chemicalBonds = 0;
@@ -35,6 +36,19 @@ var Garbage = function(position, engine, elem) {
     };
     this.body.getAvailableNeutrons = function() {
         return self.body.maxNeutrons - self.body.neutrons;
+    };
+
+    this.body.getFormula = function() {
+        var temp = this.element;
+        var dict = {};
+        dict[temp] = {};
+
+        for (var i = 0; i < self.body.chemicalChildren.length; i++) {
+            var name = self.body.chemicalChildren[i].element;
+            dict[temp][name] = self.body.chemicalChildren[i].getFormula();
+        }
+
+        return dict[temp];
     }
 };
 
@@ -112,7 +126,17 @@ Garbage.prototype = {
         delete node["constraint2"];
         node.chemicalBonds = 0;
         node.collisionFilter.group = 0;
-    }
+    },
+
+    //getFormula: function() {
+    //    var dict = {element: {}};
+    //
+    //    for (var i = 0; i < this.body.chemicalChildren; i++) {
+    //        dict[element][this.body.chemicalChildren[i]] = this.body.chemicalChildren[i].getFormula();
+    //    }
+    //
+    //    return dict;
+    //}
 };
 
 module.exports = Garbage;

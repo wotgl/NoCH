@@ -1,0 +1,1 @@
+{"type":"fun","show":{"tags":false,"location":false,"time":true,"date":false},"context":{"tags":[],"file":false,"time":1438696729723,"location":{"filename":"server.js","line":84}},"args":{"0":"hello world"},"contextString":"2015-08-04T13:58:49.723Z ","argsString":"hello world","message":"2015-08-04T13:58:49.723Z hello world"}

@@ -366,6 +366,18 @@ Player.prototype = {
         setTimeout(function() {
             self.body.coefficient = coefficient;
         }, 1500);
+    },
+
+    getFormula: function() {
+        var temp = this.body.element;
+        var dict = {};
+        dict[temp] = {};
+
+        for (var i = 0; i < this.body.chemicalChildren.length; i++) {
+            var name = this.body.chemicalChildren[i].element;
+            dict[temp][name] = this.body.chemicalChildren[i].getFormula();
+        }
+        var c = 9;
     }
 };
 
