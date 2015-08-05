@@ -62,23 +62,23 @@ var webSocketServer = new WebSocketServer.Server({
 
 
 
-var scribe = require('scribe-js')(),
-        console = process.console,
-        express = require('express'),
-        app = express();
+// var scribe = require('scribe-js')(),
+//         console = process.console,
+//         express = require('express'),
+//         app = express();
 
 
-    app.set('port', (process.env.PORT || 5000));
+//     app.set('port', (process.env.PORT || 5000));
 
-    app.get('/', function(req, res) {
-        res.send('Hello world, see you at /logs');
-    });
+//     app.get('/', function(req, res) {
+//         res.send('Hello world, see you at /logs');
+//     });
 
-    app.use('/logs', scribe.webPanel());
+//     app.use('/logs', scribe.webPanel());
 
 
-    //Make some logs
-    console.addLogger('debug', 'green');
+//     //Make some logs
+//     console.addLogger('debug', 'green');
     // console.addLogger('fun', 'red');
 
     // console.time().fun('hello world');
@@ -123,12 +123,12 @@ webSocketServer.on('connection', function(ws) {
 
     var address = ws.upgradeReq.connection.remoteAddress;   // IP-address
 
-    console.tag('connection', 'id=' + id, 'ip=' + address).time().log({
-        'type' : 'connection',
-        'ip': address,
-        'player id': id,
-        'total players': players.length
-    });
+    // console.tag('connection', 'id=' + id, 'ip=' + address).time().log({
+    //     'type' : 'connection',
+    //     'ip': address,
+    //     'player id': id,
+    //     'total players': players.length
+    // });
 
     ws.on('message', function(message) {
         //console.log('player ' + id + " says " + message);
@@ -160,24 +160,24 @@ webSocketServer.on('connection', function(ws) {
 
     ws.on('close', function () {
         // console.log('player exited ' + id);
-        console.tag('connection', 'id=' + id, 'ip=' + address).time().log({
-            'type' : 'disconnecting',
-            'ip': address,
-            'player id': id,
-            'total players': players.length,
-            'formula': player.getFormula()
-        });
+        // console.tag('connection', 'id=' + id, 'ip=' + address).time().log({
+        //     'type' : 'disconnecting',
+        //     'ip': address,
+        //     'player id': id,
+        //     'total players': players.length,
+        //     'formula': player.getFormula()
+        // });
 
         deletePlayer();
     });
 
     ws.on('error', function () {
         // console.log('player disconnected ' + id);
-        console.tag('error', 'id=' + id, 'ip=' + address).time().log({
-            'player id': id,
-            'ip': address,
-            'total players': players.length
-        });
+        // console.tag('error', 'id=' + id, 'ip=' + address).time().log({
+        //     'player id': id,
+        //     'ip': address,
+        //     'total players': players.length
+        // });
 
         deletePlayer();
     });
