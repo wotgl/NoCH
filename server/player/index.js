@@ -6,13 +6,14 @@ var Matter = require('matter-js/build/matter.js');
 var params = require("db");
 var elements = params.getParameter("elements");
 
+
 var Engine = Matter.Engine,
     World = Matter.World,
     Bodies = Matter.Bodies,
     Body = Matter.Body,
     Composite = Matter.Composite;
 
-var Player = function(ws, position, engine, elem) {
+var Player = function(ws, position, engine, elem, console) {
 
     var group = Body.nextGroup(true);
 
@@ -31,6 +32,7 @@ var Player = function(ws, position, engine, elem) {
     var self = this;
 
     this.mass = 0;
+    this.console = console;
 
     this.body.inGameType = "player";
     this.body.chemicalBonds = 0;
@@ -199,6 +201,12 @@ Player.prototype = {
                         nucleonBody.element = "Proton";
                 }, element.protonMorphing);
             }
+            this.console.tag('shoot', 'id=' + this.body.id).time().log({
+                'type' : 'shoot',
+                'player id': this.body.id,
+                'formula': this.getFormula()
+            });
+
         }
     },
 
@@ -375,9 +383,16 @@ Player.prototype = {
 
         for (var i = 0; i < this.body.chemicalChildren.length; i++) {
             var name = this.body.chemicalChildren[i].element;
+
+            var j = 1;
+            while (dict[temp][name]) {
+                name = this.body.chemicalChildren[i].element + '_' + j;
+                j++;
+            }
             dict[temp][name] = this.body.chemicalChildren[i].getFormula();
         }
-        var c = 9;
+        // var c = 9;
+        return dict
     }
 };
 

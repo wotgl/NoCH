@@ -45,6 +45,11 @@ var Garbage = function(position, engine, elem) {
 
         for (var i = 0; i < self.body.chemicalChildren.length; i++) {
             var name = self.body.chemicalChildren[i].element;
+            var j = 1;
+            while (dict[temp][name]) {
+                name = self.body.chemicalChildren[i].element + '_' + j;
+                j++;
+            }
             dict[temp][name] = self.body.chemicalChildren[i].getFormula();
         }
 

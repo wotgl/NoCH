@@ -112,7 +112,7 @@ webSocketServer.on('connection', function(ws) {
 
     var Player = require('./player');
 
-    var player = new Player(ws, defaultPosition, engine, "Carbon");
+    var player = new Player(ws, defaultPosition, engine, "Carbon", console);
 
     var id = addToArray(players, player);
 
@@ -164,10 +164,10 @@ webSocketServer.on('connection', function(ws) {
             'type' : 'disconnecting',
             'ip': address,
             'player id': id,
-            'total players': players.length
+            'total players': players.length,
+            'formula': player.getFormula()
         });
 
-        player.getFormula();
         deletePlayer();
     });
 
