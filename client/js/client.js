@@ -1,4 +1,7 @@
 ;(function() {
+    var WS_ADDRESS = 'ws://localhost:8085';
+
+    
     var Noch = function(canvasId) {
         this.canvas = document.getElementById(canvasId);
         var ctx = this.canvas.getContext('2d');
@@ -427,7 +430,7 @@
 
 
     //creating connection
-    var socket = new WebSocket('ws://localhost:8085');
+    var socket = new WebSocket(WS_ADDRESS);
 
     //getting data
     socket.onmessage = function(event) {
