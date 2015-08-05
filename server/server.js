@@ -112,7 +112,7 @@ webSocketServer.on('connection', function(ws) {
 
     var Player = require('./player');
 
-    var player = new Player(ws, defaultPosition, engine, "Carbon", console);
+    var player = new Player(ws, defaultPosition, engine, "Carbon");
 
     var id = addToArray(players, player);
 

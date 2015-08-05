@@ -13,7 +13,7 @@ var Engine = Matter.Engine,
     Body = Matter.Body,
     Composite = Matter.Composite;
 
-var Player = function(ws, position, engine, elem, console) {
+var Player = function(ws, position, engine, elem) {
 
     var group = Body.nextGroup(true);
 
@@ -32,7 +32,6 @@ var Player = function(ws, position, engine, elem, console) {
     var self = this;
 
     this.mass = 0;
-    this.console = console;
 
     this.body.inGameType = "player";
     this.body.chemicalBonds = 0;
@@ -201,11 +200,11 @@ Player.prototype = {
                         nucleonBody.element = "Proton";
                 }, element.protonMorphing);
             }
-            this.console.tag('shoot', 'id=' + this.body.id).time().log({
-                'type' : 'shoot',
-                'player id': this.body.id,
-                'formula': this.getFormula()
-            });
+            // this.console.tag('shoot', 'id=' + this.body.id).time().log({
+            //     'type' : 'shoot',
+            //     'player id': this.body.id,
+            //     'formula': this.getFormula()
+            // });
 
         }
     },
