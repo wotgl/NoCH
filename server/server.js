@@ -88,11 +88,11 @@ var webSocketServer = new WebSocketServer.Server({
     //     c: [1, 2, 3]
     // });
 
-    var port = app.get("port");
+    // var port = app.get("port");
 
-    app.listen(port, function() {
-        console.time().log('Server listening at port ' + port);
-    });
+    // app.listen(port, function() {
+    //     console.time().log('Server listening at port ' + port);
+    // });
 
 
 
